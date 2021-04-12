@@ -5,6 +5,13 @@ Aliyun DDNS. Supports multiple network interfaces for independent dynamic resolu
 
 - 支持绑定指定网卡的域名解析
 
+## 编译
+
+```
+go get github.com/aliyun/alibaba-cloud-sdk-go
+```
+
+> coder只知道怎么下载依赖，不知道怎么编译 （没错，由于用的idea，没有从命令行做过编译，所以我也不知道怎么通过命令行编译它），所以自行研究吧。（coder真的太懒太懒了）
 
 ## 使用方法
 
@@ -14,7 +21,9 @@ Aliyun DDNS. Supports multiple network interfaces for independent dynamic resolu
 aliyunddns config.toml
 ```
 
-初始化文件生成以后，根据提示进行编辑
+初始化文件生成以后，根据提示进行编辑。
+
+> *文件会默认生成网卡信息，可以根据生成的网卡信息配置IpFinder中的参数。*
 
 ```toml
 # IF MTU NAME MAC FLAGS
