@@ -48,17 +48,21 @@ func getPublicNetIP(IF int, IFName string, uri string) (string, error) {
 					return nil, err
 				}
 				conn, err := net.DialTCP(network, lAddr, rAddr)
-				return conn, nil
+				return conn, err
 			},
 		}
 	}
 	client := &http.Client{Transport: tr}
 	resp, err := client.Get(uri)
 	if err != nil {
-		fmt.Print(err.Error())
 		return "", err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		err := resp.Body.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
