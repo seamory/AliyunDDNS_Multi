@@ -30,9 +30,21 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	ip, err := getPublicNetIP(config.IpFinder.Interface, config.IpFinder.InterfaceName, config.IpFinder.Uri)
-	if err != nil {
-		panic(err)
+	waiter := len(config.Record)
+	for _, record := range config.Record {
+		record := record
+		go func() {
+			defer func() {
+				waiter--
+			}()
+			ip, err := getPublicNetIP(record.Interface, record.InterfaceName, config.IpFinder.Uri)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			aliyunDDNS(client, ip, record)
+		}()
 	}
-	aliyunDDNS(client, ip, config.Record)
+	for 0 != waiter {
+	}
 }
